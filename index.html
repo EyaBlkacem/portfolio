@@ -252,43 +252,63 @@
   .gallery-head h3{ font-size:1.3rem; }
   .gallery-head span{ font-size:.78rem; color:var(--ink-soft); font-style:italic; }
 
-  .gallery{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; }
-  .shot-wide{ grid-column:1 / -1; }
-  @media (max-width:700px){ .gallery{ grid-template-columns:1fr; } }
-  .shot{ margin:0; }
-  .shot button{
-    display:block; width:100%; padding:0; margin:0;
-    background:var(--card);
-    border:1px solid var(--line);
-    cursor:zoom-in;
-    position:relative; overflow:hidden;
-    transition:transform .3s ease, box-shadow .3s ease, border-color .25s ease;
-  }
-  .shot button:hover,
-  .shot button:focus-visible{
-    transform:translateY(-4px);
-    border-color:var(--gold);
-    box-shadow:0 18px 30px -20px color-mix(in srgb, var(--ink) 55%, transparent);
+  /* carousel */
+  .carousel{ position:relative; }
+  .car-stage{ position:relative; border:1px solid var(--line); background:var(--bg-raised); }
+  .car-viewport{
+    display:flex; overflow-x:auto; overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none; -webkit-overflow-scrolling:touch;
+    aspect-ratio:2.3 / 1;
     outline:none;
   }
-  .shot button::after{
-    content:"Agrandir";
-    position:absolute; right:.7rem; bottom:.7rem;
-    font-size:.62rem; text-transform:uppercase; letter-spacing:.1em;
-    padding:.3rem .65rem;
-    background:color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter:blur(6px);
-    border:1px solid var(--line);
-    border-radius:100px;
-    color:var(--ink);
-    opacity:0; transform:translateY(4px);
-    transition:opacity .25s ease, transform .25s ease;
+  .car-viewport::-webkit-scrollbar{ display:none; }
+  .car-viewport:focus-visible{ box-shadow:inset 0 0 0 2px var(--gold); }
+  .car-slide{ flex:0 0 100%; position:relative; scroll-snap-align:center; scroll-snap-stop:always; }
+  .car-open{
+    position:absolute; inset:0;
+    display:block; width:100%; height:100%;
+    padding:0; margin:0; border:none; background:transparent;
+    cursor:zoom-in;
   }
-  .shot button:hover::after,
-  .shot button:focus-visible::after{ opacity:1; transform:translateY(0); }
-  .shot img{ display:block; width:100%; height:auto; }
-  .shot figcaption{ margin-top:.8rem; font-size:.82rem; color:var(--ink-soft); line-height:1.55; }
-  .shot figcaption b{ display:block; font-weight:500; color:var(--ink); font-size:.86rem; }
+  .car-open img{ display:block; width:100%; height:100%; object-fit:contain; image-rendering:auto; }
+  .car-arrow{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:2;
+    width:46px; height:46px; padding:0; border-radius:50%;
+    border:1px solid var(--line);
+    background:color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter:blur(6px);
+    color:var(--ink); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .25s ease, color .25s ease, transform .25s ease;
+  }
+  .car-arrow:hover,
+  .car-arrow:focus-visible{ border-color:var(--gold); color:var(--gold); outline:none; transform:translateY(-50%) scale(1.07); }
+  .car-arrow svg{ width:20px; height:20px; }
+  .car-arrow.prev{ left:.8rem; }
+  .car-arrow.next{ right:.8rem; }
+  @media (max-width:700px){
+    .car-viewport{ aspect-ratio:1.9 / 1; }
+    .car-arrow{ width:38px; height:38px; }
+    .car-arrow.prev{ left:.4rem; }
+    .car-arrow.next{ right:.4rem; }
+  }
+  .car-meta{ display:flex; justify-content:space-between; align-items:flex-start; gap:1.2rem; margin-top:1.1rem; }
+  .car-cap{ font-size:.86rem; color:var(--ink-soft); line-height:1.55; min-height:3.2em; max-width:68ch; }
+  .car-cap b{ display:block; font-weight:500; color:var(--ink); font-size:.92rem; }
+  .car-count{ font-size:.72rem; letter-spacing:.12em; color:var(--gold); white-space:nowrap; padding-top:.2rem; font-variant-numeric:tabular-nums; }
+  .car-dots{ display:flex; justify-content:center; flex-wrap:wrap; gap:.4rem; margin-top:.6rem; }
+  .car-dots button{
+    width:24px; height:24px; padding:0; border:none; background:transparent; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .car-dots button::before{
+    content:""; width:9px; height:9px; border-radius:50%;
+    border:1px solid var(--gold); background:transparent;
+    transition:background .25s ease, transform .25s ease;
+  }
+  .car-dots button[aria-current="true"]::before{ background:var(--gold); transform:scale(1.25); }
+  .car-dots button:focus-visible{ outline:2px solid var(--gold); outline-offset:-2px; border-radius:50%; }
 
   .f-links{ display:flex; flex-wrap:wrap; gap:1rem; margin-top:3rem; }
   .btn{
@@ -561,51 +581,61 @@
 
     <div class="gallery-head reveal">
       <h3>L'application en images</h3>
-      <span>Cliquez sur une capture pour l'agrandir</span>
+      <span>Flèches, points ou glisser — cliquez sur une capture pour l'agrandir</span>
     </div>
 
-    <div class="gallery" id="gallery">
-      <figure class="shot shot-wide reveal">
-        <button type="button" data-full="images/psychocare-dashboard.png" data-title="Tableau de bord psychiatre" data-cap="Indicateurs clés (rendez-vous, évaluations, patients), analyse mensuelle des rendez-vous, répartition des risques et patients récents.">
-          <img src="images/psychocare-dashboard.png" width="690" height="310" loading="lazy" alt="Tableau de bord PsychoCare : indicateurs, graphique des rendez-vous, répartition des risques et liste des patients récents">
-        </button>
-        <figcaption><b>Tableau de bord psychiatre</b>Indicateurs clés, répartition des risques et patients récents en un coup d'œil.</figcaption>
-      </figure>
-
-      <figure class="shot reveal">
-        <button type="button" data-full="images/psychocare-evaluations.png" data-title="Évaluations des patients" data-cap="Liste des évaluations avec score sur 100, niveau de risque, état de l'analyse IRM, statut et génération du rapport.">
-          <img src="images/psychocare-evaluations.png" width="937" height="428" loading="lazy" alt="Page des évaluations PsychoCare : tableau des scores, niveaux de risque et statuts d'analyse IRM">
-        </button>
-        <figcaption><b>Évaluations</b>Score, niveau de risque, état de l'IRM et génération du rapport.</figcaption>
-      </figure>
-
-      <figure class="shot reveal">
-        <button type="button" data-full="images/psychocare-patients.png" data-title="Suivi des patients" data-cap="Fiches patients avec indice de risque bipolaire, état des analyses IRM, dernière visite, activité récente et alertes critiques.">
-          <img src="images/psychocare-patients.png" width="948" height="378" loading="lazy" alt="Page Mes patients de PsychoCare : fiches avec indice de risque, analyses et alertes critiques">
-        </button>
-        <figcaption><b>Suivi des patients</b>Indice de risque, analyses réalisées, activité récente et alertes.</figcaption>
-      </figure>
-
-      <figure class="shot reveal">
-        <button type="button" data-full="images/psychocare-dossier-medical.png" data-title="Dossier médical et rapport généré" data-cap="Dossier d'un patient : réponses au questionnaire, résultat de l'analyse IRM et rapport IA généré, exportable en PDF.">
-          <img src="images/psychocare-dossier-medical.png" width="670" height="311" loading="lazy" alt="Dossier médical PsychoCare : questionnaire, analyse IRM et rapport IA généré">
-        </button>
-        <figcaption><b>Dossier &amp; rapport IA</b>Questionnaire, analyse IRM et rapport généré, exportable en PDF.</figcaption>
-      </figure>
-
-      <figure class="shot reveal">
-        <button type="button" data-full="images/psychocare-rdv-psychiatre.png" data-title="Gestion des rendez-vous" data-cap="Vue du psychiatre : rendez-vous à venir, statuts (en attente, confirmé, terminé) et actions rapides de validation ou d'annulation.">
-          <img src="images/psychocare-rdv-psychiatre.png" width="941" height="426" loading="lazy" alt="Page des rendez-vous côté psychiatre : tableau des consultations, statuts et actions">
-        </button>
-        <figcaption><b>Rendez-vous (psychiatre)</b>Statuts, validation et annulation en un clic.</figcaption>
-      </figure>
-
-      <figure class="shot shot-wide reveal">
-        <button type="button" data-full="images/psychocare-patient-rdv.png" data-title="Espace patient" data-cap="Côté patient : consultations à venir et passées, accès direct à la visioconsultation, messagerie, questionnaire d'évaluation et recherche de psychiatre.">
-          <img src="images/psychocare-patient-rdv.png" width="938" height="318" loading="lazy" alt="Espace patient PsychoCare : cartes de rendez-vous avec accès à la visioconsultation">
-        </button>
-        <figcaption><b>Espace patient</b>Rendez-vous, visioconsultation, messagerie et questionnaire d'évaluation.</figcaption>
-      </figure>
+    <div class="carousel reveal" id="carousel" role="region" aria-roledescription="carrousel" aria-label="Captures d'écran de PsychoCare">
+      <div class="car-stage">
+        <button type="button" class="car-arrow prev" id="carPrev" aria-label="Capture précédente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="car-viewport" id="carViewport" tabindex="0" aria-label="Captures d'écran, utilisez les flèches gauche et droite du clavier">
+        <div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="1 sur 8" data-title="Tableau de bord psychiatre" data-cap="Indicateurs clés (rendez-vous, évaluations, patients), analyse mensuelle des rendez-vous, répartition des risques et patients récents.">
+          <button type="button" class="car-open" aria-label="Agrandir la capture : Tableau de bord psychiatre">
+            <img src="images/psychocare-dashboard.png" width="1380" height="620" loading="eager" decoding="async" alt="Tableau de bord PsychoCare : indicateurs, graphique des rendez-vous, répartition des risques et patients récents">
+          </button>
+        </div>
+        <div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="2 sur 8" data-title="Évaluations des patients" data-cap="Liste des évaluations avec score sur 100, niveau de risque, état de l'analyse IRM, statut et génération du rapport.">
+          <button type="button" class="car-open" aria-label="Agrandir la capture : Évaluations des patients">
+            <img src="images/psychocare-evaluations.png" width="1874" height="856" loading="lazy" decoding="async" alt="Page des évaluations PsychoCare : tableau des scores, niveaux de risque et statuts d'analyse IRM">
+          </button>
+        </div>
+        <div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="3 sur 8" data-title="Dossier médical et rapport IA" data-cap="Réponses au questionnaire, résultat de l'analyse IRM et rapport généré par l'IA, exportable en PDF.">
+          <button type="button" class="car-open" aria-label="Agrandir la capture : Dossier médical et rapport IA">
+            <img src="images/psychocare-dossier-medical.png" width="1340" height="622" loading="lazy" decoding="async" alt="Dossier médical PsychoCare : questionnaire, analyse IRM et rapport IA généré">
+          </button>
+        </div>
+        <div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="4 sur 8" data-title="Suivi des patients" data-cap="Fiches patients avec indice de risque bipolaire, état des analyses IRM, dernière visite, activité récente et alertes critiques.">
+          <button type="button" class="car-open" aria-label="Agrandir la capture : Suivi des patients">
+            <img src="images/psychocare-patients.png" width="1896" height="756" loading="lazy" decoding="async" alt="Page Mes patients de PsychoCare : fiches avec indice de risque, analyses et alertes critiques">
+          </button>
+        </div>
+        <div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="5 sur 8" data-title="Rendez-vous côté psychiatre" data-cap="Rendez-vous à venir, statuts (en attente, confirmé, terminé) et actions rapides de validation ou d'annulation.">
+          <button type="button" class="car-open" aria-label="Agrandir la capture : Rendez-vous côté psychiatre">
+            <img src="images/psychocare-rdv-psychiatre.png" width="1882" height="852" loading="lazy" decoding="async" alt="Page des rendez-vous côté psychiatre : tableau des consultations, statuts et actions">
+          </button>
+        </div>
+        <div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="6 sur 8" data-title="Espace patient" data-cap="Consultations à venir et passées, accès direct à la visioconsultation, messagerie, questionnaire d'évaluation et recherche de psychiatre.">
+          <button type="button" class="car-open" aria-label="Agrandir la capture : Espace patient">
+            <img src="images/psychocare-patient-rdv.png" width="1876" height="636" loading="lazy" decoding="async" alt="Espace patient PsychoCare : cartes de rendez-vous avec accès à la visioconsultation">
+          </button>
+        </div>
+        <div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="7 sur 8" data-title="Trouver un psychiatre" data-cap="Recherche de professionnels par spécialité et par ville sur une carte interactive, avec géolocalisation du patient.">
+          <button type="button" class="car-open" aria-label="Agrandir la capture : Trouver un psychiatre">
+            <img src="images/psychocare-trouver-psychiatre.png" width="1908" height="802" loading="lazy" decoding="async" alt="Page Find your Psychiatrist de PsychoCare : filtres de spécialité, choix de la ville et carte interactive">
+          </button>
+        </div>
+        <div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="8 sur 8" data-title="Visioconsultation" data-cap="Salle d'appel vidéo entre patient et psychiatre : flux local et distant, coupure du micro et de la caméra, fin de la consultation.">
+          <button type="button" class="car-open" aria-label="Agrandir la capture : Visioconsultation">
+            <img src="images/psychocare-visioconsultation.png" width="1908" height="870" loading="lazy" decoding="async" alt="Salle de consultation vidéo PsychoCare : vidéo locale, vidéo du participant et boutons micro, caméra et terminer">
+          </button>
+        </div>
+        </div>
+        <button type="button" class="car-arrow next" id="carNext" aria-label="Capture suivante"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <div class="car-meta">
+        <div class="car-cap" aria-live="polite"><b id="carTitle"></b><span id="carCap"></span></div>
+        <div class="car-count" id="carCount">1 / 8</div>
+      </div>
+      <div class="car-dots" id="carDots"></div>
     </div>
 
     <div class="f-links reveal">
@@ -788,33 +818,97 @@
   }, { threshold: 0.6 });
   counters.forEach(el => countObs.observe(el));
 
-  // lightbox for PsychoCare screenshots
+  // PsychoCare carousel + lightbox
   (function(){
-    const dlg = document.getElementById('lightbox');
-    const img = document.getElementById('lbImg');
-    const ttl = document.getElementById('lbTitle');
-    const cap = document.getElementById('lbCap');
-    const shots = Array.from(document.querySelectorAll('#gallery .shot button'));
-    if (!dlg || !shots.length || typeof dlg.showModal !== 'function') return;
-    let idx = 0;
+    const vp = document.getElementById('carViewport');
+    if (!vp) return;
+    const slides = Array.from(vp.querySelectorAll('.car-slide'));
+    const dotsBox = document.getElementById('carDots');
+    const titleEl = document.getElementById('carTitle');
+    const capEl = document.getElementById('carCap');
+    const countEl = document.getElementById('carCount');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let idx = 0, raf = null, lockTimer = null, locked = false;
 
-    function show(i){
-      idx = (i + shots.length) % shots.length;
-      const b = shots[idx];
-      img.src = b.dataset.full;
-      img.alt = b.querySelector('img').alt;
-      ttl.textContent = b.dataset.title;
-      cap.textContent = b.dataset.cap;
+    const dots = slides.map((s, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Aller à la capture ' + (i + 1));
+      b.addEventListener('click', () => goTo(i));
+      dotsBox.appendChild(b);
+      return b;
+    });
+
+    function render(){
+      const s = slides[idx];
+      titleEl.textContent = s.dataset.title;
+      capEl.textContent = s.dataset.cap;
+      countEl.textContent = (idx + 1) + ' / ' + slides.length;
+      dots.forEach((d, i) => d.setAttribute('aria-current', i === idx ? 'true' : 'false'));
     }
-    shots.forEach((b, i) => b.addEventListener('click', () => { show(i); dlg.showModal(); }));
-    document.getElementById('lbPrev').addEventListener('click', () => show(idx - 1));
-    document.getElementById('lbNext').addEventListener('click', () => show(idx + 1));
+
+    function goTo(i, instant){
+      const wrapped = i < 0 || i >= slides.length;
+      idx = (i + slides.length) % slides.length;
+      const jump = instant || reduce || wrapped;
+      locked = true;
+      clearTimeout(lockTimer);
+      lockTimer = setTimeout(() => { locked = false; }, jump ? 60 : 650);
+      vp.scrollTo({ left: idx * vp.clientWidth, behavior: jump ? 'auto' : 'smooth' });
+      render();
+    }
+
+    vp.addEventListener('scroll', () => {
+      if (locked || raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        const i = Math.round(vp.scrollLeft / vp.clientWidth);
+        if (i !== idx && i >= 0 && i < slides.length){ idx = i; render(); }
+      });
+    }, { passive: true });
+
+    document.getElementById('carPrev').addEventListener('click', () => goTo(idx - 1));
+    document.getElementById('carNext').addEventListener('click', () => goTo(idx + 1));
+    vp.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft'){ e.preventDefault(); goTo(idx - 1); }
+      else if (e.key === 'ArrowRight'){ e.preventDefault(); goTo(idx + 1); }
+      else if (e.key === 'Home'){ e.preventDefault(); goTo(0); }
+      else if (e.key === 'End'){ e.preventDefault(); goTo(slides.length - 1); }
+    });
+    window.addEventListener('resize', () => {
+      vp.scrollTo({ left: idx * vp.clientWidth, behavior: 'auto' });
+    });
+    render();
+
+    // lightbox
+    const dlg = document.getElementById('lightbox');
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+    const lbImg = document.getElementById('lbImg');
+    const lbTitle = document.getElementById('lbTitle');
+    const lbCap = document.getElementById('lbCap');
+    let lbIdx = 0;
+
+    function lbShow(i){
+      lbIdx = (i + slides.length) % slides.length;
+      const s = slides[lbIdx];
+      const im = s.querySelector('img');
+      lbImg.src = im.currentSrc || im.src;
+      lbImg.alt = im.alt;
+      lbTitle.textContent = s.dataset.title;
+      lbCap.textContent = s.dataset.cap;
+    }
+    slides.forEach((s, i) => {
+      s.querySelector('.car-open').addEventListener('click', () => { lbShow(i); dlg.showModal(); });
+    });
+    document.getElementById('lbPrev').addEventListener('click', () => lbShow(lbIdx - 1));
+    document.getElementById('lbNext').addEventListener('click', () => lbShow(lbIdx + 1));
     document.getElementById('lbClose').addEventListener('click', () => dlg.close());
     dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
     dlg.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') show(idx - 1);
-      if (e.key === 'ArrowRight') show(idx + 1);
+      if (e.key === 'ArrowLeft') lbShow(lbIdx - 1);
+      if (e.key === 'ArrowRight') lbShow(lbIdx + 1);
     });
+    dlg.addEventListener('close', () => goTo(lbIdx, true));
   })();
 </script>
 </body>
