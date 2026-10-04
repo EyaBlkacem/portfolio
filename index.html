@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eya Belkacem — Ingénieure IA &amp; Data / Full-Stack</title>
+<title>Eya Belkacem — Ingénieure IA & Data / Full-Stack</title>
 <meta name="description" content="Portfolio d'Eya Belkacem, élève ingénieure en IA & Data Science, développeuse full-stack.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -196,6 +196,136 @@
   .tl-item ul{ margin:1rem 0 0; padding-left:1.1rem; }
   .tl-item li{ color:var(--ink-soft); font-size:.92rem; margin-bottom:.45rem; }
 
+  /* ---- featured project (PsychoCare) ---- */
+  .feature .f-title{
+    font-size:clamp(1.9rem, 3.8vw, 2.7rem);
+    line-height:1.15;
+    margin-top:.7rem;
+    max-width:20ch;
+  }
+  .feature .f-sub{ font-size:1.02rem; margin-top:1.4rem; max-width:62ch; }
+  .f-tags{ display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.6rem; }
+  .pill{
+    font-size:.68rem; text-transform:uppercase; letter-spacing:.08em;
+    padding:.35rem .8rem;
+    border:1px solid var(--line);
+    border-radius:100px;
+    color:var(--ink-soft);
+    background:var(--card);
+  }
+  .pill:nth-child(3n+1){ border-color:color-mix(in srgb, var(--gold) 55%, var(--line)); color:var(--gold); }
+  .pill:nth-child(3n+2){ border-color:color-mix(in srgb, var(--emerald) 55%, var(--line)); color:var(--emerald); }
+  .pill:nth-child(3n+3){ border-color:color-mix(in srgb, var(--wine) 55%, var(--line)); color:var(--wine); }
+
+  .feat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; margin-top:3rem; }
+  @media (max-width:760px){ .feat-grid{ grid-template-columns:1fr; } }
+  .feat{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--gold);
+    padding:1.6rem 1.5rem;
+  }
+  .feat:nth-child(2){ border-top-color:var(--emerald); }
+  .feat:nth-child(3){ border-top-color:var(--wine); }
+  .feat .tracked{ font-size:.66rem; }
+  .feat:nth-child(2) .tracked{ color:var(--emerald); }
+  .feat:nth-child(3) .tracked{ color:var(--wine); }
+  .feat h3{ font-size:1.08rem; margin:.6rem 0 .6rem; }
+  .feat p{ font-size:.86rem; margin:0; }
+
+  .arch{
+    display:flex; flex-wrap:wrap; align-items:stretch; gap:.9rem;
+    margin-top:2.6rem;
+  }
+  .arch div{
+    flex:1 1 180px;
+    padding:1rem 1.2rem;
+    border:1px dashed var(--line);
+    font-size:.82rem; color:var(--ink-soft);
+  }
+  .arch b{
+    display:block; font-family:'Playfair Display', serif; font-weight:500;
+    font-size:1rem; color:var(--ink); margin-bottom:.2rem;
+  }
+
+  .gallery-head{ margin:4rem 0 1.4rem; display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .gallery-head h3{ font-size:1.3rem; }
+  .gallery-head span{ font-size:.78rem; color:var(--ink-soft); font-style:italic; }
+
+  .gallery{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; }
+  .shot-wide{ grid-column:1 / -1; }
+  @media (max-width:700px){ .gallery{ grid-template-columns:1fr; } }
+  .shot{ margin:0; }
+  .shot button{
+    display:block; width:100%; padding:0; margin:0;
+    background:var(--card);
+    border:1px solid var(--line);
+    cursor:zoom-in;
+    position:relative; overflow:hidden;
+    transition:transform .3s ease, box-shadow .3s ease, border-color .25s ease;
+  }
+  .shot button:hover,
+  .shot button:focus-visible{
+    transform:translateY(-4px);
+    border-color:var(--gold);
+    box-shadow:0 18px 30px -20px color-mix(in srgb, var(--ink) 55%, transparent);
+    outline:none;
+  }
+  .shot button::after{
+    content:"Agrandir";
+    position:absolute; right:.7rem; bottom:.7rem;
+    font-size:.62rem; text-transform:uppercase; letter-spacing:.1em;
+    padding:.3rem .65rem;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(6px);
+    border:1px solid var(--line);
+    border-radius:100px;
+    color:var(--ink);
+    opacity:0; transform:translateY(4px);
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .shot button:hover::after,
+  .shot button:focus-visible::after{ opacity:1; transform:translateY(0); }
+  .shot img{ display:block; width:100%; height:auto; }
+  .shot figcaption{ margin-top:.8rem; font-size:.82rem; color:var(--ink-soft); line-height:1.55; }
+  .shot figcaption b{ display:block; font-weight:500; color:var(--ink); font-size:.86rem; }
+
+  .f-links{ display:flex; flex-wrap:wrap; gap:1rem; margin-top:3rem; }
+  .btn{
+    display:inline-block;
+    padding:.8rem 1.8rem;
+    border:1px solid var(--gold);
+    text-decoration:none;
+    text-transform:uppercase; letter-spacing:.12em; font-size:.72rem;
+    color:var(--ink);
+    transition:background .3s ease, color .3s ease, border-color .3s ease;
+  }
+  .btn:hover{ background:var(--gold); color:var(--bg); }
+
+  /* lightbox */
+  .lightbox{
+    border:none; padding:0;
+    width:min(1100px, 94vw);
+    max-height:92vh;
+    background:var(--card);
+    color:var(--ink);
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.55);
+  }
+  .lightbox::backdrop{ background:rgba(10,9,7,.78); backdrop-filter:blur(3px); }
+  .lb-body{ padding:1rem; }
+  .lb-body img{ display:block; width:100%; max-height:74vh; object-fit:contain; background:var(--bg-raised); }
+  .lb-bar{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.8rem 1rem 1rem; flex-wrap:wrap; }
+  .lb-cap{ font-size:.86rem; color:var(--ink-soft); flex:1 1 240px; }
+  .lb-cap b{ color:var(--ink); font-weight:500; }
+  .lb-ctrl{ display:flex; gap:.5rem; }
+  .lb-ctrl button{
+    border:1px solid var(--line); background:none; color:var(--ink);
+    text-transform:uppercase; letter-spacing:.1em; font-size:.66rem;
+    padding:.5rem .9rem; border-radius:100px; cursor:pointer;
+    transition:border-color .25s ease, color .25s ease;
+  }
+  .lb-ctrl button:hover{ border-color:var(--gold); color:var(--gold); }
+
   /* ---- projects ---- */
   .proj-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; }
   @media (max-width:700px){ .proj-grid{ grid-template-columns:1fr; } }
@@ -219,6 +349,14 @@
   .proj:nth-child(3n+2) .tag{ color:var(--emerald); }
   .proj:nth-child(3n+3) .tag{ color:var(--wine); }
   .tag:not(:last-child)::after{ content:"·"; margin-left:.9rem; color:var(--line); }
+  .proj-link{
+    display:inline-block; margin-top:1.1rem;
+    font-size:.7rem; text-transform:uppercase; letter-spacing:.12em;
+    text-decoration:none; color:var(--gold);
+    border-bottom:1px solid transparent;
+    transition:border-color .25s ease;
+  }
+  .proj-link:hover{ border-color:var(--gold); }
 
   /* ---- skills ---- */
   .skill-group{ margin-bottom:2rem; }
@@ -289,6 +427,7 @@
     <a href="#profil">Profil</a>
     <a href="#parcours">Parcours</a>
     <a href="#experiences">Expériences</a>
+    <a href="#psychocare">Projet phare</a>
     <a href="#projets">Projets</a>
     <a href="#competences">Compétences</a>
     <a href="#certifications">Certifications</a>
@@ -380,10 +519,116 @@
     </div>
   </section>
 
+  <!-- ===================== PROJET PHARE : PSYCHOCARE ===================== -->
+  <section id="psychocare" class="feature">
+    <div class="s-head reveal" style="margin-bottom:0">
+      <div class="tracked">Projet phare</div>
+      <h2 class="f-title">PsychoCare — détection et suivi du trouble bipolaire</h2>
+      <p class="f-sub">Application web qui relie patients et psychiatres autour d'un même parcours : dépistage par questionnaire, analyse d'IRM par intelligence artificielle, rendez-vous en visioconsultation et suivi clinique. Chaque évaluation produit un score de risque et un rapport exploitable par le praticien.</p>
+      <div class="f-tags">
+        <span class="pill">Angular</span>
+        <span class="pill">Node.js</span>
+        <span class="pill">MongoDB</span>
+        <span class="pill">Machine Learning</span>
+        <span class="pill">Deep Learning · IRM</span>
+        <span class="pill">Visioconsultation</span>
+      </div>
+    </div>
+
+    <div class="feat-grid">
+      <div class="feat reveal">
+        <div class="tracked">Dépistage</div>
+        <h3>Questionnaire &amp; score de risque</h3>
+        <p>Le patient remplit un questionnaire clinique. Un modèle de machine learning calcule un score sur 100 et classe le risque en faible, modéré ou élevé.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="tracked">Imagerie</div>
+        <h3>Analyse d'IRM par IA</h3>
+        <p>Pour les cas à risque, une IRM peut être demandée puis analysée par un modèle de deep learning, dont le résultat s'ajoute au dossier du patient.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="tracked">Suivi clinique</div>
+        <h3>Tableau de bord du psychiatre</h3>
+        <p>Rendez-vous, patients, évaluations, messagerie et consultations vidéo sont centralisés, avec un rapport généré et exportable en PDF.</p>
+      </div>
+    </div>
+
+    <div class="arch reveal">
+      <div><b>Frontend</b>Application Angular avec interfaces dédiées patient et psychiatre.</div>
+      <div><b>Backend</b>API Node.js : comptes, rendez-vous, consultations, évaluations.</div>
+      <div><b>Service IA</b>Service indépendant qui exécute les modèles du questionnaire et de l'IRM.</div>
+    </div>
+
+    <div class="gallery-head reveal">
+      <h3>L'application en images</h3>
+      <span>Cliquez sur une capture pour l'agrandir</span>
+    </div>
+
+    <div class="gallery" id="gallery">
+      <figure class="shot shot-wide reveal">
+        <button type="button" data-full="images/psychocare-dashboard.png" data-title="Tableau de bord psychiatre" data-cap="Indicateurs clés (rendez-vous, évaluations, patients), analyse mensuelle des rendez-vous, répartition des risques et patients récents.">
+          <img src="images/psychocare-dashboard.png" width="690" height="310" loading="lazy" alt="Tableau de bord PsychoCare : indicateurs, graphique des rendez-vous, répartition des risques et liste des patients récents">
+        </button>
+        <figcaption><b>Tableau de bord psychiatre</b>Indicateurs clés, répartition des risques et patients récents en un coup d'œil.</figcaption>
+      </figure>
+
+      <figure class="shot reveal">
+        <button type="button" data-full="images/psychocare-evaluations.png" data-title="Évaluations des patients" data-cap="Liste des évaluations avec score sur 100, niveau de risque, état de l'analyse IRM, statut et génération du rapport.">
+          <img src="images/psychocare-evaluations.png" width="937" height="428" loading="lazy" alt="Page des évaluations PsychoCare : tableau des scores, niveaux de risque et statuts d'analyse IRM">
+        </button>
+        <figcaption><b>Évaluations</b>Score, niveau de risque, état de l'IRM et génération du rapport.</figcaption>
+      </figure>
+
+      <figure class="shot reveal">
+        <button type="button" data-full="images/psychocare-patients.png" data-title="Suivi des patients" data-cap="Fiches patients avec indice de risque bipolaire, état des analyses IRM, dernière visite, activité récente et alertes critiques.">
+          <img src="images/psychocare-patients.png" width="948" height="378" loading="lazy" alt="Page Mes patients de PsychoCare : fiches avec indice de risque, analyses et alertes critiques">
+        </button>
+        <figcaption><b>Suivi des patients</b>Indice de risque, analyses réalisées, activité récente et alertes.</figcaption>
+      </figure>
+
+      <figure class="shot reveal">
+        <button type="button" data-full="images/psychocare-dossier-medical.png" data-title="Dossier médical et rapport généré" data-cap="Dossier d'un patient : réponses au questionnaire, résultat de l'analyse IRM et rapport IA généré, exportable en PDF.">
+          <img src="images/psychocare-dossier-medical.png" width="670" height="311" loading="lazy" alt="Dossier médical PsychoCare : questionnaire, analyse IRM et rapport IA généré">
+        </button>
+        <figcaption><b>Dossier &amp; rapport IA</b>Questionnaire, analyse IRM et rapport généré, exportable en PDF.</figcaption>
+      </figure>
+
+      <figure class="shot reveal">
+        <button type="button" data-full="images/psychocare-rdv-psychiatre.png" data-title="Gestion des rendez-vous" data-cap="Vue du psychiatre : rendez-vous à venir, statuts (en attente, confirmé, terminé) et actions rapides de validation ou d'annulation.">
+          <img src="images/psychocare-rdv-psychiatre.png" width="941" height="426" loading="lazy" alt="Page des rendez-vous côté psychiatre : tableau des consultations, statuts et actions">
+        </button>
+        <figcaption><b>Rendez-vous (psychiatre)</b>Statuts, validation et annulation en un clic.</figcaption>
+      </figure>
+
+      <figure class="shot shot-wide reveal">
+        <button type="button" data-full="images/psychocare-patient-rdv.png" data-title="Espace patient" data-cap="Côté patient : consultations à venir et passées, accès direct à la visioconsultation, messagerie, questionnaire d'évaluation et recherche de psychiatre.">
+          <img src="images/psychocare-patient-rdv.png" width="938" height="318" loading="lazy" alt="Espace patient PsychoCare : cartes de rendez-vous avec accès à la visioconsultation">
+        </button>
+        <figcaption><b>Espace patient</b>Rendez-vous, visioconsultation, messagerie et questionnaire d'évaluation.</figcaption>
+      </figure>
+    </div>
+
+    <div class="f-links reveal">
+      <a class="btn" href="https://github.com/EyaBlkacem/Bipolar-MRI-Web-Application" target="_blank" rel="noopener">Code source sur GitHub</a>
+    </div>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Capture d'écran agrandie">
+    <div class="lb-body"><img id="lbImg" src="" alt=""></div>
+    <div class="lb-bar">
+      <div class="lb-cap"><b id="lbTitle"></b> — <span id="lbCap"></span></div>
+      <div class="lb-ctrl">
+        <button type="button" id="lbPrev" aria-label="Capture précédente">Préc.</button>
+        <button type="button" id="lbNext" aria-label="Capture suivante">Suiv.</button>
+        <button type="button" id="lbClose" aria-label="Fermer">Fermer</button>
+      </div>
+    </div>
+  </dialog>
+
   <section id="projets">
     <div class="s-head reveal">
       <div class="tracked">Sélection</div>
-      <h2>Projets</h2>
+      <h2>Autres projets</h2>
     </div>
     <div class="proj-grid">
       <div class="proj reveal">
@@ -410,11 +655,13 @@
         <h3>PsychoCare</h3>
         <p>Application full-stack pour la prise de rendez-vous psychiatriques : rôles patient/psychiatre, messagerie bidirectionnelle en temps réel.</p>
         <div class="tag-row"><span class="tag">Angular</span><span class="tag">Node.js</span><span class="tag">MongoDB</span></div>
+        <a class="proj-link" href="#psychocare">Voir le projet phare →</a>
       </div>
       <div class="proj reveal">
         <h3>Détection du trouble bipolaire</h3>
         <p>Recherche en machine learning : Random Forest + SMOTE sur données d'enquête, et EfficientNetB1 pour l'analyse d'IRM. Article académique rédigé en anglais.</p>
         <div class="tag-row"><span class="tag">Machine Learning</span><span class="tag">Deep Learning</span></div>
+        <a class="proj-link" href="#psychocare">Voir l'application →</a>
       </div>
     </div>
   </section>
@@ -540,6 +787,35 @@
     });
   }, { threshold: 0.6 });
   counters.forEach(el => countObs.observe(el));
+
+  // lightbox for PsychoCare screenshots
+  (function(){
+    const dlg = document.getElementById('lightbox');
+    const img = document.getElementById('lbImg');
+    const ttl = document.getElementById('lbTitle');
+    const cap = document.getElementById('lbCap');
+    const shots = Array.from(document.querySelectorAll('#gallery .shot button'));
+    if (!dlg || !shots.length || typeof dlg.showModal !== 'function') return;
+    let idx = 0;
+
+    function show(i){
+      idx = (i + shots.length) % shots.length;
+      const b = shots[idx];
+      img.src = b.dataset.full;
+      img.alt = b.querySelector('img').alt;
+      ttl.textContent = b.dataset.title;
+      cap.textContent = b.dataset.cap;
+    }
+    shots.forEach((b, i) => b.addEventListener('click', () => { show(i); dlg.showModal(); }));
+    document.getElementById('lbPrev').addEventListener('click', () => show(idx - 1));
+    document.getElementById('lbNext').addEventListener('click', () => show(idx + 1));
+    document.getElementById('lbClose').addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    });
+  })();
 </script>
 </body>
 </html>
